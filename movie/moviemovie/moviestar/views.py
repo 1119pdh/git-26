@@ -65,20 +65,21 @@ class MovieListView(View):
         
         actor_list=[]
         for movie in movies:
-            actors = movie.actor_movie.actor_set.all()
+            movies_actors = Actor_movie.objects.filter(movie_id=movie.id)
             actor_list=[]
-            for actor in actors:
+            for movie_actor in movies_actors:
                 actor_list.append(
                     {
-                    "name" : actor.first_name + actor.last_name
+                    "name" : movie_actor.actor.first_name + movie_actor.actor.last_name
                     }   
                 )
-        results.append(
-            {
+            results.append(
+                {
                 "title" : movie.title ,
-                "release_date" : movie.releas_date
-            }
-        )
+                "release_date" : movie.release_date,
+                "actors_list" : actor_list
+                }
+            )
         return JsonResponse({"movies" : results}, status= 200)
 
 class Actor_MoviesListView(View):
